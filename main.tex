@@ -1,0 +1,134 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article}
+
+% Adjusting margins to personal my need
+\addtolength{\oddsidemargin}{-.5in}
+\addtolength{\evensidemargin}{-.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1in}
+
+% Graphics
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{enumitem}
+\usepackage{float}
+
+% Math
+\usepackage{amssymb}
+\usepackage{amsmath} % Required for some math elements 
+
+\usepackage{listings}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+
+
+
+% Other
+\usepackage{comment}
+\usepackage{algorithmic}
+\usepackage{array}
+\usepackage{lipsum}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+
+
+\renewcommand{\refname}{Resources} % For articles
+
+
+
+%----------------------------------------------------------------------------------------
+%	MAIN PART
+%----------------------------------------------------------------------------------------
+\begin{document}
+
+\title{\textbf{ENGG 1420 Project} \\ University Management System \\ User Guide} % Title
+%\author{Konstantin Akhmadeev, That Guy, Yet Another Guy (in alphabetic order)}
+\author{\textbf{Tevin Heath, B.Eng (2028)}\\ \href{mailto:heatht@uoguelph.ca}{heatht@uoguelph.ca} \\\\  \textbf{Ahmad Alwan, B.Eng (2029)}\\ \href{mailto:aalwan@uoguelph.ca}{aalwan@uoguelph.ca} \\\\  \textbf{Daniel Clarke, B.Eng (2029)}\\\href{mailto:dclark28@uoguelph.ca}{dclark28@uoguelph.ca} \\\\  \textbf{Ahmed Saleem, B.Eng (2029)}\\ \href{mailto:asalee07@uoguelph.ca}{asalee07@uoguelph.ca} }
+% \date{\today} % Date for the report
+\maketitle % Inserts the title, author and date
+\thispagestyle{empty}
+
+\begin{figure}[H] % [H] forces the figure to be placed exactly here
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/SOE Lockup WEB - LARGE - transparent bkgd - RED ENG.png}
+    \label{fig:enter-label}
+\end{figure}
+
+% Add the Supervisor section below the title page
+\vspace{2mm} % Adds some vertical space between the title and the supervisor section
+% \begin{abstract}
+% %% Text of the abstract
+% \end{abstract}
+
+
+
+\newpage
+\tableofcontents
+
+
+% \begin{abstract}
+% %% Text of the abstract
+% \noindent This report highlights the usage of successive parabolic interpolation and aims to helping readers understand and implement C++ and MATLAB code to test their experiment. This reports assist in providing exercises and a discussion on areas of engineering that this topic can be applied.
+
+
+% % This template will help you to write your bibliographic and final reports using \LaTeX{}. You'll find here the examples of text structuring as well as tables, figures, citations and references. For other features of \LaTeX, see tutorials on \href{https://www.overleaf.com/learn}{\textbf{Overleaf}} or use this \href{https://wch.github.io/latexsheet/}{\textbf{cheatsheet}}. To work with this template, download its entire folder (including /bibliography and /figures), and run your \LaTeX{}  editor like \href{http://www.xm1math.net/texmaker/}{\textbf{Texmaker}} or \href{https://www.overleaf.com}{\textbf{Overleaf}}. Then make a plan by changing the document's structure with \textit{section} and \textit{subsection} commands. Finally, delete the \textit{lipsum} fillings and start writing you report. Good luck!
+% \end{abstract}
+
+\newpage
+\input{contents/1introduction}
+\input{contents/2gettingstarted}
+\input{contents/3dashboardoverview}
+\input{contents/4adminfeatures}
+\input{contents/5userfeatures}
+\input{contents/7troubleshootingandsupport}
+\input{contents/8appendix}
+
+
+% \section{Results (optional)}
+
+% \begin{figure}[ht]
+%     \centering
+%     \begin{subfigure}[t]{0.4\textwidth}
+%         \centering\includegraphics[width=1\linewidth]{placeholder}
+%         \caption{An example of multiple figures in one frame.}
+%         \label{fig:example11}
+%     \end{subfigure}
+%     %
+%     \begin{subfigure}[t]{0.4\textwidth}
+%         \centering\includegraphics[width=1\linewidth]{placeholder}
+%         \caption{Next subfigure.}
+%         \label{fig:example12}
+%     \end{subfigure}
+%     %
+%     \\
+%     \begin{subfigure}[t]{0.4\textwidth}
+%         \centering\includegraphics[width=1\linewidth]{placeholder}
+%         \caption{Subfigure on another line.}
+%         \label{fig:example21}
+%     \end{subfigure}
+%     %
+%     \begin{subfigure}[t]{0.4\textwidth}
+%         \centering\includegraphics[width=1\linewidth]{placeholder}
+%         \caption{Yet another subfigure.}
+%         \label{fig:example22}
+%     \end{subfigure}    
+% \end{figure}
+
+% \lipsum[9]
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	Bibliography
+% %----------------------------------------------------------------------------------------
+% \bibliography{bibliography/sample}{}
+% \bibliographystyle{plain}
+
+\end{document}

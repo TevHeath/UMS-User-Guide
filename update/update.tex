@@ -1,0 +1,138 @@
+\section{Update}
+
+
+For this update, I was able to make the adjustment suggested at the previous research meeting. I added inputs that allow the user to determine a specific room dimensions and coordinate the x and y for the light source/users. These are provided in the following functions in MATLAB \texttt{getroomDimension.m} and \texttt{getUserLocations.m}. These functions allow the user to input what is required and those inputs are placed and used throughout the other function and the final model's calculation. Next, I was able to apply the necessary change to the simulations to the program and allow this to become a variable that is used within the program. However, I noticed that their doesn't exist randomness or noise so the simulation regardless of whether it is 100 to 3 or 1, it yields the same value. I will need to check on this and ensure that the output reflects accordingly. Finally, I was able to include the \texttt{H user} parameter and the associated variables provided in Chapter 3 of the OWC textbook. However, it took some time as some errors existed, but they were fixed. I have attached all the functions and the main code in the send message. 
+
+
+
+
+\section{Next Steps}
+
+
+For the next steps first, I plan on changing the code, assuming that it is correct, and creating a loop with step size that can cover the x-y plane on the ceiling. Second, I also plan on increasing the light sources in hopes of generating sample data in a matrix that can provide useful insights and experimental design. Second, I will attempt to continue answering the question from the practice exercises, especially the optimization power allocation. I have two midterms next week, one on Wednesday and another on Saturday. But I will be at our next meeting as it will be a welcome break after my probability midterm on Wednesday. 
+
+\section{MATLAB Functions}
+
+\subsection{MATLAB Function Achieve Data Rate}
+
+\begin{lstlisting}
+%dataratemodel_fun.m
+
+%%Function for the Achieveable Data Rate Model
+
+function [R_u] = dataratemodel_fun(W_user, P_user, R_PD, h_user, N_VLC)
+
+[R_u] = W_user*log2(1 + ...
+                   (exp(1)/2*pi) *...
+                   ((P_user*(R_PD*h_user)^2)/(W_user*N_VLC)));
+end
+\end{lstlisting}
+
+\newpage
+\subsection{User Locations Function}
+
+\begin{lstlisting}
+function user_locations = getUserLocations(lx, ly)
+    % Collects user-defined light source locations, ensuring validity.
+    num_users = input('Enter the number of light sources: ');
+    user_locations = zeros(num_users, 2);
+
+    for i = 1:num_users
+        while true
+            fprintf('Enter coordinates for light source %d:\n', i);
+            x = input('X-coordinate: ');
+            y = input('Y-coordinate: ');
+
+            if abs(x) > lx/2 || abs(y) > ly/2
+                fprintf('Error: Coordinates exceed room bounds [%.2f, %.2f]. Try again.\n', lx/2, ly/2);
+            else
+                user_locations(i, :) = [x, y];
+                break;
+            end
+        end
+    end
+end
+\end{lstlisting}
+
+\newpage
+\subsection{Room dimensions Function}
+
+\begin{lstlisting}
+function [lx, ly, lz] = getRoomDimensions()
+    % Prompts user for room dimensions and ensures valid input before returning.
+
+    while true
+        lx = input('Enter room length (lx) in meters: ');
+        ly = input('Enter room width (ly) in meters: ');
+        lz = input('Enter room height (lz) in meters: ');
+
+        % Check for invalid values, incase someone wants to break the
+        % program, negative toom dimension do not exist
+        if lx > 0 && ly > 0 && lz > 0
+            break;  % Exit loop if inputs are valid
+        else
+            fprintf('Error: Invalid dimensions [%.2f, %.2f, %.2f]. Try again.\n', lx, ly, lz);
+        end
+    end
+end
+\end{lstlisting}
+
+\newpage
+\subsection{Calculate Channel Chain}
+
+\begin{lstlisting}
+function h_user = calculate_channel_gain(user_locations, h, m, Adet)
+    % Function that calculates channel gains for each light source, depending on their location.
+    num_users = size(user_locations, 1);
+    h_user = zeros(num_users, 1);
+
+    for u = 1:num_users
+        % Calculates the distance and angle for each user (light source)
+        D = sqrt(user_locations(u, 1)^2 + user_locations(u, 2)^2 + h^2); % distance vector
+        cosphi = h / D;  % Angle of incidence calculation
+        
+        if D > 0 %Contingent code
+            h_user(u) = (m + 1) * Adet * cosphi^(m + 1) / (2 * pi * D^2);
+        else
+            h_user(u) = 0;  % Avoid division by zero
+        end
+    end
+end
+\end{lstlisting}\textbf{}
+
+\newpage
+\subsection{Compute Data Rates}
+
+\begin{lstlisting}
+function results = computeDataRates(num_users, user_locations, lz, m, Adet, W_user, P_total, R_PD, N_VLC, num_simulations)
+    % Computes data rates for varying numbers of users.
+    results = zeros(num_users, 2);
+
+    for i = 1:num_users
+        N = i; 
+        P_user = P_total / N;  % Power per user from the model
+        sum_R_u = zeros(num_simulations, 1);
+
+        for sim = 1:num_simulations
+            h_user = calculate_channel_gain(user_locations(1:N, :), lz, m, Adet);
+            R_u = achieve_dataratemodel(W_user, P_user, R_PD, h_user, N_VLC);
+            sum_R_u(sim) = sum(R_u(:));
+        end
+
+        results(i, :) = [N, mean(sum_R_u)];
+    end
+end
+\end{lstlisting}
+
+\newpage
+\subsection{Achieve Data Rate Model Function}
+
+\begin{lstlisting}
+    function R_u = achieve_dataratemodel(W_user, P_user, R_PD, h_user, N_VLC)
+    % Computes achievable data rate.
+    R_u = W_user * log2(1 + ...
+                       (exp(1) / (2 * pi)) * ...
+                       ((P_user * (R_PD * h_user).^2) ./ (W_user * N_VLC)));
+end
+
+\end{lstlisting}\textbf{}
