@@ -1,287 +1,287 @@
-\section{Code Design for Achieve Data Rate}
-\begin{comment}
-    Note that when the program was provided there existed error that had to be adjusted. These errors come from the name of the function where not the same as the function in the MATLAB code. I had to change them to ensure that it could call the correct code correctly. Second, the comments were helpful, but I needed to space out the code to ensure readbility.Once the errors were fixed I was able to run the program smoothly and investigate and attempt to understand the code.
-\end{comment}
-
-% \subsection{Laplacian Distribution}
-% Question to ask:
-
-% % \begin{enumerate}
-% %     \item I am curious regarding the laprnd.m file is why are we converting the uniform random variable to Lapacian random variable. Additionally, why are we using the lapacian distribution 
-% % \end{enumerate}
+% \section{Code Design for Achieve Data Rate}
 % \begin{comment}
-%     - I may have to research the purpose of the laplacian distrubution, since we most likley will not be covering this in STATS.
-%     - Luckily, I believe this distribution is highly documented and easy to research and find out why and how it can be applied.
-%     - From what I found, The inverse cumulative distribution function (CDF) of the Laplace distribution can be used to generate random variables from the Laplace distribution given a uniform random variable ( u ). 
-%     - Essentially, I accept that the inverse cumulative distributon works and provides the exact answer we are looking for.
+%     Note that when the program was provided there existed error that had to be adjusted. These errors come from the name of the function where not the same as the function in the MATLAB code. I had to change them to ensure that it could call the correct code correctly. Second, the comments were helpful, but I needed to space out the code to ensure readbility.Once the errors were fixed I was able to run the program smoothly and investigate and attempt to understand the code.
 % \end{comment}
 
+% % \subsection{Laplacian Distribution}
+% % Question to ask:
 
-\subsection{MATLAB Function Achieve Data Rate}
-
-\begin{lstlisting}
-%dataratemodel_fun.m
-
-%%Function for the Achieveable Data Rate Model
-
-function [R_u] = dataratemodel_fun(W_user, P_user, R_PD, h_user, N_VLC)
-
-[R_u] = W_user*log2(1 + ...
-                   (exp(1)/2*pi) *...
-                   ((P_user*(R_PD*h_user)^2)/(W_user*N_VLC)));
-end
-\end{lstlisting}
-
-\newpage
-\subsection{MATLAB Test Script: Achieve Data Rate with Parameters and Output}
+% % % \begin{enumerate}
+% % %     \item I am curious regarding the laprnd.m file is why are we converting the uniform random variable to Lapacian random variable. Additionally, why are we using the lapacian distribution 
+% % % \end{enumerate}
+% % \begin{comment}
+% %     - I may have to research the purpose of the laplacian distrubution, since we most likley will not be covering this in STATS.
+% %     - Luckily, I believe this distribution is highly documented and easy to research and find out why and how it can be applied.
+% %     - From what I found, The inverse cumulative distribution function (CDF) of the Laplace distribution can be used to generate random variables from the Laplace distribution given a uniform random variable ( u ). 
+% %     - Essentially, I accept that the inverse cumulative distributon works and provides the exact answer we are looking for.
+% % \end{comment}
 
 
-\begin{lstlisting}
-clc; 
-clear; 
-close all;
+% \subsection{MATLAB Function Achieve Data Rate}
 
-%dataratemodel.m
+% \begin{lstlisting}
+% %dataratemodel_fun.m
 
-% Defined values, I need to research/ask viable data values with Syl
-%The values are 10, they can be changed
+% %%Function for the Achieveable Data Rate Model
 
-W_user = 10; % Bandwidth for user u
-P_user = 10; % Allocated transmit for for user u
-R_PD = 10;   % Responsivity of the PD
-h_user = 10;  % Channel gain of user u
-N_VLC = 10;    % Power spectrical density of additive white Gaussian Noise 
+% function [R_u] = dataratemodel_fun(W_user, P_user, R_PD, h_user, N_VLC)
 
+% [R_u] = W_user*log2(1 + ...
+%                    (exp(1)/2*pi) *...
+%                    ((P_user*(R_PD*h_user)^2)/(W_user*N_VLC)));
+% end
+% \end{lstlisting}
 
-% Call the dataratemodel function
-R_u = datarate(W_user, P_user, R_PD, h_user, N_VLC);
-
-% Display the result
-fprintf('The achieveable data rate is: %.2f Mbps\n', R_u);
+% \newpage
+% \subsection{MATLAB Test Script: Achieve Data Rate with Parameters and Output}
 
 
+% \begin{lstlisting}
+% clc; 
+% clear; 
+% close all;
 
-function [R_u] = datarate(W_user, P_user, R_PD, h_user, N_VLC)
+% %dataratemodel.m
 
-[R_u] = W_user*log2(1 + ...
-                   (exp(1)/2*pi) *...
-                   ((P_user*(R_PD*h_user)^2)/(W_user*N_VLC)));
-end
-\end{lstlisting}
+% % Defined values, I need to research/ask viable data values with Syl
+% %The values are 10, they can be changed
 
-\subsection{MATLAB Test Script: Achieve Data Rate Calculator with User Input Values}
-
-\begin{lstlisting}
-clc; 
-clear; 
-close all;
-
-%dataratemodel_input.m
-
-% Test script aims at allowing the user to Input values that a user 
-% can include to calculate and experiment the achieve data rate.
-
-% Prompt user for the experimental values
-W_user = input('Enter the bandwidth (W_user):\n ');
-P_user = input('Enter the allocated transmit power for the user (P_user): \n ');
-R_PD = input('Enter the responsivity (R_PD) of the PD:\n ');
-h_user = input('Enter the channel gain for the user (h_user):\n');
-N_VLC = input(['Enter the Power Spectral Density' ...
-    ' of Additive White Gaussion noise:\n ']);
+% W_user = 10; % Bandwidth for user u
+% P_user = 10; % Allocated transmit for for user u
+% R_PD = 10;   % Responsivity of the PD
+% h_user = 10;  % Channel gain of user u
+% N_VLC = 10;    % Power spectrical density of additive white Gaussian Noise 
 
 
-% Call the dataratemodel function (from below)
-R_u = datarate(W_user, P_user, R_PD, h_user, N_VLC);
+% % Call the dataratemodel function
+% R_u = datarate(W_user, P_user, R_PD, h_user, N_VLC);
 
-% Display the result
-fprintf('The achieveable data rate, R_user is: %.2f Mbps\n', R_u);
-
-
-%Achieve dataratemodel
-function [R_u] = datarate(W_user, P_user, R_PD, h_user, N_VLC)
-
-[R_u] = W_user*log2(1 + ...
-                   (exp(1)/2*pi) *...
-                   ((P_user*(R_PD*h_user)^2)/(W_user*N_VLC)));
-end
+% % Display the result
+% fprintf('The achieveable data rate is: %.2f Mbps\n', R_u);
 
 
-\end{lstlisting}
 
-\subsection{MATLAB Test Script: Achieve Data Rate with Experimental Values}
+% function [R_u] = datarate(W_user, P_user, R_PD, h_user, N_VLC)
 
-\begin{lstlisting}
-clc; 
-clear all; 
-close all;
+% [R_u] = W_user*log2(1 + ...
+%                    (exp(1)/2*pi) *...
+%                    ((P_user*(R_PD*h_user)^2)/(W_user*N_VLC)));
+% end
+% \end{lstlisting}
 
-%dataratemodel_expt.m
+% \subsection{MATLAB Test Script: Achieve Data Rate Calculator with User Input Values}
 
+% \begin{lstlisting}
+% clc; 
+% clear; 
+% close all;
 
-%{ 
-Purpose of the MATLAB code
-Generate the achieveable data rate in MATLAB
+% %dataratemodel_input.m
 
-This achieveable data rate allows for any arbitary located user to be
-calculated for the data rate for that user.
+% % Test script aims at allowing the user to Input values that a user 
+% % can include to calculate and experiment the achieve data rate.
 
-%}
-
-
-%%%%%%Test Script for the using Experimental Values and Sample of User%%%%%
-
-% Experimental values set to 10 (changeable depending on the experiment)
-P_max = 10;   % Max allocated transmit for the user 
-W_user = 10;  % Bandwidth for user u
-R_PD = 10;    % Responsivity of the PD
-h_user = 10;  % Channel gain of user u
-N_VLC = 10;   % Power spectrical density of additive white Gaussian Noise 
+% % Prompt user for the experimental values
+% W_user = input('Enter the bandwidth (W_user):\n ');
+% P_user = input('Enter the allocated transmit power for the user (P_user): \n ');
+% R_PD = input('Enter the responsivity (R_PD) of the PD:\n ');
+% h_user = input('Enter the channel gain for the user (h_user):\n');
+% N_VLC = input(['Enter the Power Spectral Density' ...
+%     ' of Additive White Gaussion noise:\n ']);
 
 
-% List of number of users, requested by Supervisor
-N_users = [1, 2, 5, 7, 10];
+% % Call the dataratemodel function (from below)
+% R_u = datarate(W_user, P_user, R_PD, h_user, N_VLC);
 
-% Initialize the table for storing results
-results = zeros(length(N_users), 2);
+% % Display the result
+% fprintf('The achieveable data rate, R_user is: %.2f Mbps\n', R_u);
 
-% Loop through different numbers of users
-for i = 1:length(N_users)
-    N = N_users(i);  % Number of users
-    P_user = P_max / N;  % Power per user
+
+% %Achieve dataratemodel
+% function [R_u] = datarate(W_user, P_user, R_PD, h_user, N_VLC)
+
+% [R_u] = W_user*log2(1 + ...
+%                    (exp(1)/2*pi) *...
+%                    ((P_user*(R_PD*h_user)^2)/(W_user*N_VLC)));
+% end
+
+
+% \end{lstlisting}
+
+% \subsection{MATLAB Test Script: Achieve Data Rate with Experimental Values}
+
+% \begin{lstlisting}
+% clc; 
+% clear all; 
+% close all;
+
+% %dataratemodel_expt.m
+
+
+% %{ 
+% Purpose of the MATLAB code
+% Generate the achieveable data rate in MATLAB
+
+% This achieveable data rate allows for any arbitary located user to be
+% calculated for the data rate for that user.
+
+% %}
+
+
+% %%%%%%Test Script for the using Experimental Values and Sample of User%%%%%
+
+% % Experimental values set to 10 (changeable depending on the experiment)
+% P_max = 10;   % Max allocated transmit for the user 
+% W_user = 10;  % Bandwidth for user u
+% R_PD = 10;    % Responsivity of the PD
+% h_user = 10;  % Channel gain of user u
+% N_VLC = 10;   % Power spectrical density of additive white Gaussian Noise 
+
+
+% % List of number of users, requested by Supervisor
+% N_users = [1, 2, 5, 7, 10];
+
+% % Initialize the table for storing results
+% results = zeros(length(N_users), 2);
+
+% % Loop through different numbers of users
+% for i = 1:length(N_users)
+%     N = N_users(i);  % Number of users
+%     P_user = P_max / N;  % Power per user
     
-    % Call the dataratemodel function for each user (i.e., the sum_rate)
-    R_u = achieve_dataratemodel(W_user, P_user, R_PD, h_user, N_VLC);
+%     % Call the dataratemodel function for each user (i.e., the sum_rate)
+%     R_u = achieve_dataratemodel(W_user, P_user, R_PD, h_user, N_VLC);
     
-    % Store the result in the table
-    results(i, :) = [N, R_u];
-end
+%     % Store the result in the table
+%     results(i, :) = [N, R_u];
+% end
 
-% Create the table, we used this instead of disp('____') to separate
-T = array2table(results, 'VariableNames', {'Number_of_Users', 'Sum_Data_Rate(Mbps)'});
+% % Create the table, we used this instead of disp('____') to separate
+% T = array2table(results, 'VariableNames', {'Number_of_Users', 'Sum_Data_Rate(Mbps)'});
 
-% Display the table
-disp(T);
-
-
-function [R_u] = achieve_dataratemodel(W_user, P_user, R_PD, h_user, N_VLC)
-    % adjusted achieveable data rate model where the P_user = P_max / N; 
-    R_u = W_user * log2(1 + ...
-                       (exp(1) / (2 * pi)) * ...
-                       ((P_user * (R_PD * h_user)^2) / (W_user * N_VLC)));
-end
-\end{lstlisting}
+% % Display the table
+% disp(T);
 
 
-\subsection{MATLAB Function: Achieve Data Rate with User Input Experimental Values }
+% function [R_u] = achieve_dataratemodel(W_user, P_user, R_PD, h_user, N_VLC)
+%     % adjusted achieveable data rate model where the P_user = P_max / N; 
+%     R_u = W_user * log2(1 + ...
+%                        (exp(1) / (2 * pi)) * ...
+%                        ((P_user * (R_PD * h_user)^2) / (W_user * N_VLC)));
+% end
+% \end{lstlisting}
 
-\begin{lstlisting}
-%calculate_data_input_expt.m
 
-function calculate_data_rate_input_expt()
-    % Prompt user for the constants and values
-    P_max = input('Enter the allocated transmit power for the user (P_user): \n ');
-    W_user = input('Enter the bandwidth (W_user): \n ');
-    R_PD = input('Enter the responsivity (R_PD) of the PD: \n ');
-    h_user = input('Enter the channel gain for the user (h_user): \n ');
-    N_VLC = input(['Enter the Power Spectral Density' ...
-        ' of Additive White Gaussion noise: \n ']);
+% \subsection{MATLAB Function: Achieve Data Rate with User Input Experimental Values }
+
+% \begin{lstlisting}
+% %calculate_data_input_expt.m
+
+% function calculate_data_rate_input_expt()
+%     % Prompt user for the constants and values
+%     P_max = input('Enter the allocated transmit power for the user (P_user): \n ');
+%     W_user = input('Enter the bandwidth (W_user): \n ');
+%     R_PD = input('Enter the responsivity (R_PD) of the PD: \n ');
+%     h_user = input('Enter the channel gain for the user (h_user): \n ');
+%     N_VLC = input(['Enter the Power Spectral Density' ...
+%         ' of Additive White Gaussion noise: \n ']);
     
-    % Prompt user to input the list of users
-    N_users = input('Input a sample size/numbers of users in the following format:\n e.g., [1, 2, 3,...]):\n ');
+%     % Prompt user to input the list of users
+%     N_users = input('Input a sample size/numbers of users in the following format:\n e.g., [1, 2, 3,...]):\n ');
 
-    % % Display message for quitting
-    % disp('To exit the program, just press Enter when prompted for further input.');
+%     % % Display message for quitting
+%     % disp('To exit the program, just press Enter when prompted for further input.');
 
-    % Initialize the table for storing results
-    results = zeros(length(N_users), 2);
+%     % Initialize the table for storing results
+%     results = zeros(length(N_users), 2);
 
-    % Loop through different numbers of users
-    for i = 1:length(N_users)  %Max length depends on the input of the user
-        N = N_users(i);  % Number of users
-        P_user = P_max / N;  % Power per user
+%     % Loop through different numbers of users
+%     for i = 1:length(N_users)  %Max length depends on the input of the user
+%         N = N_users(i);  % Number of users
+%         P_user = P_max / N;  % Power per user
         
-        % Call the dataratemodel function for each user
-        R_u = dataratemodel(W_user, P_user, R_PD, h_user, N_VLC);
+%         % Call the dataratemodel function for each user
+%         R_u = dataratemodel(W_user, P_user, R_PD, h_user, N_VLC);
         
-        % Store the result in the table
-        results(i, :) = [N, R_u];
-    end
+%         % Store the result in the table
+%         results(i, :) = [N, R_u];
+%     end
 
-    % Create the table
-    T = array2table(results, 'VariableNames', {'Number_of_Users', 'Sum_Data_Rate'});
+%     % Create the table
+%     T = array2table(results, 'VariableNames', {'Number_of_Users', 'Sum_Data_Rate'});
 
-    % Display the table
-    disp('The results of the data rate calculations are:');
-    disp(T);
-end
+%     % Display the table
+%     disp('The results of the data rate calculations are:');
+%     disp(T);
+% end
 
-% Function to calculate the data rate for each user
-function [R_u] = dataratemodel(W_user, P_user, R_PD, h_user, N_VLC)
-    % Updated model to compute the individual user data rate
-    R_u = W_user * log2(1 + ...
-                       (exp(1) / (2 * pi)) * ...
-                       ((P_user * (R_PD * h_user)^2) / (W_user * N_VLC)));
-end
-\end{lstlisting}
+% % Function to calculate the data rate for each user
+% function [R_u] = dataratemodel(W_user, P_user, R_PD, h_user, N_VLC)
+%     % Updated model to compute the individual user data rate
+%     R_u = W_user * log2(1 + ...
+%                        (exp(1) / (2 * pi)) * ...
+%                        ((P_user * (R_PD * h_user)^2) / (W_user * N_VLC)));
+% end
+% \end{lstlisting}
 
 
-% \subsection{C++ Code Design (Time Permitting \& Optional)}
-% \label{S:1}
+% % \subsection{C++ Code Design (Time Permitting \& Optional)}
+% % \label{S:1}
 
-% Examples of lists:
-% \begin{itemize}
-% \item Bullet point one
-% \item Bullet point two
-% \end{itemize}
+% % Examples of lists:
+% % \begin{itemize}
+% % \item Bullet point one
+% % \item Bullet point two
+% % \end{itemize}
 
-% \begin{enumerate}
-% \item Numbered list item one
-% \item Numbered list item two
-% \end{enumerate}
+% % \begin{enumerate}
+% % \item Numbered list item one
+% % \item Numbered list item two
+% % \end{enumerate}
 
-% \lipsum[9]
+% % \lipsum[9]
 
-% \subsection{Subsection 1}
+% % \subsection{Subsection 1}
 
-% \textbf{Example of table reference: see Table \ref{tab:example}}.
-% \lipsum[4]
+% % \textbf{Example of table reference: see Table \ref{tab:example}}.
+% % \lipsum[4]
 
-% \begin{table}[ht] 
-% \centering
-% \begin{tabular}{l l l}
-% \hline
-% \textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-% \hline
-% Treatment 1 & 0.0003262 & 0.562 \\
-% Treatment 2 & 0.0015681 & 0.910 \\
-% Treatment 3 & 0.0009271 & 0.296 \\
-% \hline
-% \end{tabular}
-% \caption{Table caption}
-% \label{tab:example}
-% \end{table}
+% % \begin{table}[ht] 
+% % \centering
+% % \begin{tabular}{l l l}
+% % \hline
+% % \textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+% % \hline
+% % Treatment 1 & 0.0003262 & 0.562 \\
+% % Treatment 2 & 0.0015681 & 0.910 \\
+% % Treatment 3 & 0.0009271 & 0.296 \\
+% % \hline
+% % \end{tabular}
+% % \caption{Table caption}
+% % \label{tab:example}
+% % \end{table}
 
-% \subsection{Subsection 2}
+% % \subsection{Subsection 2}
 
-% \textbf{Example of figure reference: see Figure \ref{fig:example}}. 
-% \lipsum[5]
+% % \textbf{Example of figure reference: see Figure \ref{fig:example}}. 
+% % \lipsum[5]
 
-% \begin{figure}[ht]
-%     \centering\includegraphics[width=0.4\linewidth]{placeholder}
-%     \caption{An example of simple figure.}
-%     \label{fig:example}
-% \end{figure}
+% % \begin{figure}[ht]
+% %     \centering\includegraphics[width=0.4\linewidth]{placeholder}
+% %     \caption{An example of simple figure.}
+% %     \label{fig:example}
+% % \end{figure}
 
-% \textbf{Example of equation reference: see Equation \eqref{eq:emc}}. 
-% \lipsum[6]
+% % \textbf{Example of equation reference: see Equation \eqref{eq:emc}}. 
+% % \lipsum[6]
 
-% \begin{equation} \label{eq:emc}
-%     e = mc^2
-% \end{equation}
+% % \begin{equation} \label{eq:emc}
+% %     e = mc^2
+% % \end{equation}
 
-% \subsection{Subsection 3}
+% % \subsection{Subsection 3}
 
-% \textbf{Example of reference to Section \ref{S:1}.} 
-% \lipsum[7]
-% \lipsum[8]
+% % \textbf{Example of reference to Section \ref{S:1}.} 
+% % \lipsum[7]
+% % \lipsum[8]
 

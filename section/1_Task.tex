@@ -1,75 +1,75 @@
-\section{Comparison of Optical Wireless Communication and VLC}
+% \section{Comparison of Optical Wireless Communication and VLC}
 
-This program aims at generating a light source with potential blockers at random location within the constraint of the specified box. Each time the user runs the program a new location that consists of 1 light source and 3 blockers and other 3 objects. The following discussion aims at dissecting the program \verb|indoor_environment.m| in order to better understand program for improve and comparison to other models.
+% This program aims at generating a light source with potential blockers at random location within the constraint of the specified box. Each time the user runs the program a new location that consists of 1 light source and 3 blockers and other 3 objects. The following discussion aims at dissecting the program \verb|indoor_environment.m| in order to better understand program for improve and comparison to other models.
 
-The \verb|indoor_environment.m| program starts with the electrical transmit power and potential blockers. These parameters and constraints provide a simulation that can visually allow for interpreting the output and visual interpretation. Both the electrical power transmitted and the number of blockers are assigned as arrays within the program. The program remains in the for loop meaning that all the adjust are nested within, additionally, the only global variables are the maximum electrical transit power and the number of blockers. All other variables will remain local within the program.
+% The \verb|indoor_environment.m| program starts with the electrical transmit power and potential blockers. These parameters and constraints provide a simulation that can visually allow for interpreting the output and visual interpretation. Both the electrical power transmitted and the number of blockers are assigned as arrays within the program. The program remains in the for loop meaning that all the adjust are nested within, additionally, the only global variables are the maximum electrical transit power and the number of blockers. All other variables will remain local within the program.
 
-Next the program utilizes the random variables by using the Laplace Distribution, that allows for the interaction between a uniform variable that generate a random variable. More variables are included to address the azimuth angle $\phi$, commonly presented in physics classes when handling spherical coordinates. The section of the code that address the random device allows for the user to input a uniform variable and it si converted into the Laplacian distribution using the Laplacian random variable. It is important to note that the change is orientation is required since Cartesian would not be ideal, thus coordinates of spherical and cylindrical would work better and easier to handle.
+% Next the program utilizes the random variables by using the Laplace Distribution, that allows for the interaction between a uniform variable that generate a random variable. More variables are included to address the azimuth angle $\phi$, commonly presented in physics classes when handling spherical coordinates. The section of the code that address the random device allows for the user to input a uniform variable and it si converted into the Laplacian distribution using the Laplacian random variable. It is important to note that the change is orientation is required since Cartesian would not be ideal, thus coordinates of spherical and cylindrical would work better and easier to handle.
 
-In the next section of the \verb|indoor_environment.m| local variables are assigned and created that will be utilized within the program to ensure that the creation of the model remains stable, the following are the assigned variables. \\
-\textbf{Design Variables}
-\begin{itemize}
-    \item \verb|x0 & y0;| - these are initial values for the model that used within the the optics parameters 
-    \item \verb|N=3;|, these are the numbers of users with in the model, these can be adjust within the program. (i.e., an increase to 4,5 to 10 users). This variables is used within the program to highlight the change in the users displayed.
-    \item \verb|r_ind=5;| - These are the radius of the deployed users, similarly these values can be changed accordingly.
-    \item \verb|Num_obstruc=Black_den(blk_cnt)| - These are the number of obstructions that exist, given that we assigned an array of 4 to the \verb|blk_cnt|, this value will be 4 unless changes are made to the global variables of \verb|Block_den|.
-    \item \verb|FOV=85| - This is the half angle of the Field of View (FOV), in degres
-    \item \verb|FOVr=(FOV*pi)/180| - This is the field of view for the receiver converted in the radians.
-    \item \verb|theta=70;| - This is the semi-angle at half power, like
-    \item \verb|m_ue=-log10(2)/log10(cosd(theta));| - This is the Lambertian order of emission,  \textbf{Ask Syl about what this is}
-    \item \verb|Adet=1e-4;| - Detect physical area of the PD, \textbf{Ask Syl what does PD mean, I think it means partial dischage, but I do not know what that is at the moment} %PD refers to photodetector, in visible light light, retrieves light signal that converts into a design.
-    \item \verb|h=2.15;| - The distance between the source and the receiver plane
-    \item \verb|BW=200*1e+06;| - Bandwidth, refers to the network bandwidth, 200 Mbps is a common unit of measurement and makes sense in that context, this was determined with a common google search.
-    \item \verb|P_total=Opt_Tx_Pow(Pow_ind);| - Total power variable
-    \item \verb|No_vlc=((10^(-21)*BW;| - noise power, these re the location where there isn't any visible light communication and it is the noise associated. Ask \textbf{Syl about this} %Regardless of light or no light, there is will noise, the deeper problem is where is the noise coming from. All electron devices that carry a current, they vibrate with each other, in doing so, that produces a noise that cannot destroyed, called thermal noise, that comes from the random noise from electrons. This noise occurs at every frequency that a devices is working on, it is presented in the reciever, this means that before we get a signal to the reciever the noise is already there. This means that the noise will have an impact on the signal. Thermal noise is the key takeaway.
-\end{itemize}
+% In the next section of the \verb|indoor_environment.m| local variables are assigned and created that will be utilized within the program to ensure that the creation of the model remains stable, the following are the assigned variables. \\
+% \textbf{Design Variables}
+% \begin{itemize}
+%     \item \verb|x0 & y0;| - these are initial values for the model that used within the the optics parameters 
+%     \item \verb|N=3;|, these are the numbers of users with in the model, these can be adjust within the program. (i.e., an increase to 4,5 to 10 users). This variables is used within the program to highlight the change in the users displayed.
+%     \item \verb|r_ind=5;| - These are the radius of the deployed users, similarly these values can be changed accordingly.
+%     \item \verb|Num_obstruc=Black_den(blk_cnt)| - These are the number of obstructions that exist, given that we assigned an array of 4 to the \verb|blk_cnt|, this value will be 4 unless changes are made to the global variables of \verb|Block_den|.
+%     \item \verb|FOV=85| - This is the half angle of the Field of View (FOV), in degres
+%     \item \verb|FOVr=(FOV*pi)/180| - This is the field of view for the receiver converted in the radians.
+%     \item \verb|theta=70;| - This is the semi-angle at half power, like
+%     \item \verb|m_ue=-log10(2)/log10(cosd(theta));| - This is the Lambertian order of emission,  \textbf{Ask Syl about what this is}
+%     \item \verb|Adet=1e-4;| - Detect physical area of the PD, \textbf{Ask Syl what does PD mean, I think it means partial dischage, but I do not know what that is at the moment} %PD refers to photodetector, in visible light light, retrieves light signal that converts into a design.
+%     \item \verb|h=2.15;| - The distance between the source and the receiver plane
+%     \item \verb|BW=200*1e+06;| - Bandwidth, refers to the network bandwidth, 200 Mbps is a common unit of measurement and makes sense in that context, this was determined with a common google search.
+%     \item \verb|P_total=Opt_Tx_Pow(Pow_ind);| - Total power variable
+%     \item \verb|No_vlc=((10^(-21)*BW;| - noise power, these re the location where there isn't any visible light communication and it is the noise associated. Ask \textbf{Syl about this} %Regardless of light or no light, there is will noise, the deeper problem is where is the noise coming from. All electron devices that carry a current, they vibrate with each other, in doing so, that produces a noise that cannot destroyed, called thermal noise, that comes from the random noise from electrons. This noise occurs at every frequency that a devices is working on, it is presented in the reciever, this means that before we get a signal to the reciever the noise is already there. This means that the noise will have an impact on the signal. Thermal noise is the key takeaway.
+% \end{itemize}
 
-Next, we will create the optic parameters that are critical for understanding and optimizing the performance of the system. \\
+% Next, we will create the optic parameters that are critical for understanding and optimizing the performance of the system. \\
 
-\textbf{Optics Parameters} 
-\begin{itemize}
-    \item \verb|Ts=1;| - Gain of the optical filter, this is not used within the program but exist incase it is applied
-    \item \verb|index=1.5;| - the refractive index of the lens at a Partial discharge, can be ignore if a lens is not being used within the model.
-    \item \verb|LoS_Gain=1;Non_LoS_gain=2;| - Gain applied to the model potentially at a later date
-    \item \verb|while LoS_Gain<=Non_LoS_Gain| - While loop to be applied on a later date
-    \item \verb|G_Con=(index^2)/sin(FOVr);| - Gain for the optical concentrator, ask \textbf{Syl about what this means especially the word for the concentrator}, a google search states that: A gain concentrator is a device designed to amplify or enhance the sensitivity of a sensor or system by focusing or concentrating a specific type of field or signal. But I need to confirm
-    %Concentrator analogy, Suppose you have a cup and it brought close to a lightbulb, then a light signal will be directly to the cup, meaning the photodetector is small compared to the cup. So suppose the PD is at the centre due to the areas being small, the light signal is weak because of the PD being weak. Now lets have a concentrator with a cone, it collects the light signals and directs it towards the PD to a more concentrated light beam to the PD
-    \item \verb|cx_r = r_ind-rand(1, 3*N)*2*r_ind+x0; cy_r = r_ind-rand(1, 3*N)*2*r_ind+y0;| - generates 3N random points with square that is 2R by 2R
-    \item \verb|ue_index_vec_x=[];ue_index_vec_y=[];| - \textbf{Ask Syl about this and what it means}
-\end{itemize}
+% \textbf{Optics Parameters} 
+% \begin{itemize}
+%     \item \verb|Ts=1;| - Gain of the optical filter, this is not used within the program but exist incase it is applied
+%     \item \verb|index=1.5;| - the refractive index of the lens at a Partial discharge, can be ignore if a lens is not being used within the model.
+%     \item \verb|LoS_Gain=1;Non_LoS_gain=2;| - Gain applied to the model potentially at a later date
+%     \item \verb|while LoS_Gain<=Non_LoS_Gain| - While loop to be applied on a later date
+%     \item \verb|G_Con=(index^2)/sin(FOVr);| - Gain for the optical concentrator, ask \textbf{Syl about what this means especially the word for the concentrator}, a google search states that: A gain concentrator is a device designed to amplify or enhance the sensitivity of a sensor or system by focusing or concentrating a specific type of field or signal. But I need to confirm
+%     %Concentrator analogy, Suppose you have a cup and it brought close to a lightbulb, then a light signal will be directly to the cup, meaning the photodetector is small compared to the cup. So suppose the PD is at the centre due to the areas being small, the light signal is weak because of the PD being weak. Now lets have a concentrator with a cone, it collects the light signals and directs it towards the PD to a more concentrated light beam to the PD
+%     \item \verb|cx_r = r_ind-rand(1, 3*N)*2*r_ind+x0; cy_r = r_ind-rand(1, 3*N)*2*r_ind+y0;| - generates 3N random points with square that is 2R by 2R
+%     \item \verb|ue_index_vec_x=[];ue_index_vec_y=[];| - \textbf{Ask Syl about this and what it means}
+% \end{itemize}
 
-Next, we will now have to utilize the two additional function \verb|| and \verb||, that both aim at generating the objects that can illustrate the simulation in MATLAB.
+% Next, we will now have to utilize the two additional function \verb|| and \verb||, that both aim at generating the objects that can illustrate the simulation in MATLAB.
 
 
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|p{8.5cm}|p{8.5cm}|} % Define column width
-\hline
-\textbf{Similarities} & \textbf{Differences} \\
-\hline
-\begin{minipage}{\linewidth}
-\vspace{0.2cm} % Add space at the bottom
-\begin{itemize}[leftmargin=*] 
-    \item Point 1
-    \item Point 2
-    \item Point 3
-    \item Point 4
-\end{itemize} 
-\vspace{0.05cm} % Add space at the bottom
-\end{minipage}
-& 
-\begin{minipage}{\linewidth}
-\vspace{0.2cm}
-\begin{itemize}[leftmargin=*] 
-    \item Point A
-    \item Point B
-    \item Point C
-    \item Point D
-\end{itemize} 
-\vspace{0.05cm} % Add space at the bottom
-\end{minipage} \\
-\hline
-\end{tabular}
-\caption{Similarities and Differences Table}
-\end{table}
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{|p{8.5cm}|p{8.5cm}|} % Define column width
+% \hline
+% \textbf{Similarities} & \textbf{Differences} \\
+% \hline
+% \begin{minipage}{\linewidth}
+% \vspace{0.2cm} % Add space at the bottom
+% \begin{itemize}[leftmargin=*] 
+%     \item Point 1
+%     \item Point 2
+%     \item Point 3
+%     \item Point 4
+% \end{itemize} 
+% \vspace{0.05cm} % Add space at the bottom
+% \end{minipage}
+% & 
+% \begin{minipage}{\linewidth}
+% \vspace{0.2cm}
+% \begin{itemize}[leftmargin=*] 
+%     \item Point A
+%     \item Point B
+%     \item Point C
+%     \item Point D
+% \end{itemize} 
+% \vspace{0.05cm} % Add space at the bottom
+% \end{minipage} \\
+% \hline
+% \end{tabular}
+% \caption{Similarities and Differences Table}
+% \end{table}
